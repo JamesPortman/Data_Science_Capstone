@@ -1,16 +1,24 @@
+# Load the libraries
+library(stringi)
 
-directory <- "/Users/admin/Capstone/"
-sampleSize <- 1000 # For sampling a file
+setwd("/Users/admin/Capstone/")
+sampleSize <- 2000 # For sampling a file
 
-entireBlogsText <- readLines(paste(directory, "en_US.blogs.txt", sep=""), skipNul = TRUE)
+# Read in Blog file
+entireBlogsText <- readLines(con <- file("./en_US.blogs.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
 sampleBlogs <- sample(entireBlogsText, sampleSize)
 remove(entireBlogsText) # Reclaim memory.
 
-entireNewsText <- readLines(paste(directory,"en_US.news.txt", sep=""), skipNul = TRUE)
+# Read in News file
+entireNewsText <- readLines(con <- file("./en_US.news.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
 sampleNews <- sample(entireNewsText,sampleSize)
 remove(entireNewsText) # Reclaim memory.
 
-entireTwitterText <- readLines(paste(directory,"en_US.twitter.txt",sep=""), skipNul = TRUE)
+# Read in Twitter file
+entireTwitterText <- readLines(con <- file("./en_US.twitter.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
 sampleTwitter <- sample(entireTwitterText,sampleSize)
 remove(entireTwitterText) # Reclaim memory.
 
@@ -18,4 +26,3 @@ remove(entireTwitterText) # Reclaim memory.
 sample <- c(sampleBlogs,sampleNews,sampleTwitter)
 remove(sampleBlogs,sampleNews,sampleTwitter) # Reclaim memory.
 
-#txt <- sent_detect(sample)
