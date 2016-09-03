@@ -1,0 +1,68 @@
+---
+title: "Data Science Capstone Milestone Report"
+author: "James Portman"
+date: "September 3, 2016"
+output: html_document
+---
+
+## Instructions
+The goal of this Milestone project is to demonstrate proficiency working with the data and progress with the prediction algorithm. It will show the exploratory analysis and the goals for the eventual app and algorithm. 
+
+This document should be concise and explain only the major features of the data you have identified and briefly summarize your plans for creating the prediction algorithm and Shiny app in a way that would be understandable to a non-data scientist manager. You should make use of tables and plots to illustrate important summaries of the data set.<br>
+The motivation for this Milestone project is to:<br>
+1. Demonstrate that you've downloaded the data and have successfully loaded it in. <br>
+2. Create a basic report of summary statistics about the data sets. <br>
+3. Report any interesting findings that you amassed so far. <br>
+4. Get feedback on your plans for creating a prediction algorithm and Shiny app.<br>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+
+# libraries required
+library(ggplot2)
+library(stringi)
+
+setwd("/Users/admin/Capstone/")
+```
+
+Original data source: <br>
+http://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip
+
+## Download and unzip data
+```{r download_data}
+# download.file(url = "https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip", 
+#               destfile = "Coursera-SwiftKey.zip", method = "curl")
+
+#  unzip('Coursera-SwiftKey.zip') 
+```
+  
+The unzipped files includes the following:<br>
+* en_US.blogs.txt <br>
+* en_US.news.txt <br>
+* en_US.twitter.txt <br>
+
+## Load data
+
+```{r load_data}
+# Read in Blog file
+blogs <- readLines(con <- file("./en_US.blogs.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
+
+# Read in News file
+news <- readLines(con <- file("./en_US.news.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
+
+# Read in Twitter file
+tweets <- readLines(con <- file("./en_US.twitter.txt"), encoding = "UTF-8", skipNul = TRUE)
+close(con) # Close the connection to the file.
+```
+
+## Summary statistics about the data sets.
+```{r summary_data}
+
+number_of_lines <- c(length(tweets),length(news),length(blogs))
+number_of_lines <- data.frame(number_of_lines)
+number_of_lines$names <- c("Twitter","News","Blogs")
+
+ggplot(number_of_lines,aes(x=names,y=number_of_lines)) + geom_bar(stat='identity', fill="green", color='blue') + xlab('Source') + ylab('# of Lines') + ggtitle('Lines per Source')
+```
