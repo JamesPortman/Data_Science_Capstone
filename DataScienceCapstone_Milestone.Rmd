@@ -1,7 +1,7 @@
 ---
 title: "Data Science Capstone Milestone Report"
 author: "James Portman"
-date: "September 3, 2016"
+date: "September 4, 2016"
 output: html_document
 ---
 
@@ -15,29 +15,31 @@ The motivation for this Milestone project is to:<br>
 * Report any interesting findings that you amassed so far. <br>
 * Get feedback on your plans for creating a prediction algorithm and Shiny app.<br>
 
-## Synopsis
+## Steps
 1.0 Download and unzip data.<br>
 2.0 Load data.<br>
-3.0 Summary statistics.<br>
+3.0 Create Summary statistics.<br>
 3.1 Sample the data.<br>
-3.2 Explore data.<br>
-4.0 Interesting Findings.<br>
-5.0 Next steps.<br>
-
+3.2 Explore sampled data.<br>
+4.0 Combine Samples into a Corpus.<br>
+4.1 Explore Word frequency in Corpus.<br>
+5.0 Planning Next steps.<br>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(cache=TRUE)
 
 # libraries required
-library(ggplot2)
 library(stringi)
-library(R.utils)
+library(ggplot2)
+library(gridExtra)
+library(tm)
+library(quanteda)
 
 setwd("/Users/admin/Capstone/")
 set.seed(1969)
 ```
 
-## 1.0 Download and unzip data
+### 1.0 Download and unzip data
 Original data source: <br>
 http://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip
 ```{r download_data}
@@ -52,7 +54,7 @@ The unzipped files include the following:<br>
 * en_US.news.txt <br>
 * en_US.twitter.txt <br>
 
-## 2.0 Load data
+### 2.0 Load data
 
 ```{r load_data}
 # Read in Blog file
@@ -68,7 +70,7 @@ tweets <- readLines(con <- file("./en_US.twitter.txt"), encoding = "UTF-8", skip
 close(con) # Close the connection to the file.
 ```
 
-## 3.0 Summary statistics
+### 3.0 Create Summary statistics
 ```{r summary_lines}
 number_of_lines <- c(length(blogs), length(news), length(tweets))
 number_of_lines <- data.frame(number_of_lines)
@@ -98,30 +100,42 @@ ggplot(number_of_words,aes(x=names, y=number_of_words)) + geom_bar(stat='identit
 
 ### 3.1 Sample the data
 ```{r sample}
-sampleSize <- 2000 # For sampling a file
+sampleSize <- 10000
 sampleBlogs <- sample(blogs, sampleSize)
 sampleNews <- sample(news, sampleSize)
 sampleTweets <- sample(tweets, sampleSize)
 
-# Reclaim memory
-remove(blogs) 
-remove(news) 
-remove(tweets) 
 ```
 
-### 3.2 Explore data
+### 3.2 Explore sampled data
 ```{r explore_data}
-sampleBlogs[100]
+head(sampleBlogs, 3)
 
-sampleNews[100]
+head(sampleNews, 3)
 
-sampleTweets[1:3]
+head(sampleTweets, 3)
 ```
 
-## 4.0 Interesting Findings
-Explore features of the corpus by building and Unigram, Bigram and Trigram tables.
+### 4.0 Combine Samples into a Corpus
+```{r message=FALSE}
+corpus1 <- corpus(sampleBlogs)
+corpus2 <- corpus(sampleNews)
+corpus3 <- corpus(sampleTweets)
+corpus_sum <- corpus1 + corpus2 + corpus3
 
-## 5.0 Next steps
-* Create a frequency table.<br>
-* Develop predictive model.<br>
-* Create and publish a Shiny app.<br>
+# Create Document Frequency Matrix
+theDFM <- dfm(corpus_sum, verbose = TRUE, toLower = TRUE, removeTwitter = TRUE, 
+             removeNumbers = TRUE, ignoredFeatures = stopwords("english"))
+```
+
+### 4.1 Explore Word frequency in Corpus
+```{r message=FALSE}
+barplot(topfeatures(theDFM, 10), main="Top 10 Words in Corpus", col="orange", ylab="Frequency")
+plot(theDFM, min.freq = 500, random.order = FALSE) # Word Cloud.
+```
+
+## 5.0 Planning Next steps
+* Develop a predictive model that can predict the current word based on the first few letters.<br>
+* Develop a predictive model that suggest one or more next words.<br>
+* Build a validation framework to test model performance.<br>
+* Deploy model as a Shiny App.<br>
