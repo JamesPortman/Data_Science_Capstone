@@ -1,35 +1,57 @@
-Algorthim and App Pitch
+Word Predictor App
 ========================================================
+font-family: 'Helvetica'
 author: James Portman
 date: September 27, 2016
 autosize: true
+transition: fade
+
+<br>
+This presentation will describe the algorithm used in the Word Predictor App. The App is published as a Shiny app. A link and instructions for using the App will be detailed on a subsequent slide.
+<p>
+This presentation is part of the Capstone project for the Data Science course offered through John Hopkins University.
 
 
-Slide 2
+Goal of the App
+========================================================
+
+The goal of the app is to predict the next possible word based on previous words in the sentence. Constraints on the App are:
+
+- Must work within the memory and performance limits of a Shiny App.
+- Must load quickly.
+- Must provide predictions within a 3 second window. 
+
+
+How the predictive model works
+========================================================
+
+DATA SOURCE<br>
+SwiftKey provided three files: Twitter tweets, Blog posts, and News entries. These files were randomly sampled and combined into a corpus of 15,000 sentences. The corpus was cleaned be stripping white, removing punctation and numbers, converting to lowercase, etc.
+
+CREATING N-GRAMS<br>
+An n-gram tokenizer was used to create bigrams, trigrams and quadgrams that are then sorted by frequency. These n-grams are stored in data files to be quickly loaded by the Shiny App.
+
+
+ Quantitative performance of prediction algorithm
 ========================================================
 
 - Bullet 1
 - Bullet 2
 - Bullet 3
 
-Slide 3
+
+Shiny App in Action
 ========================================================
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+The App can be seen at: 
 
-Slide 4
-========================================================
+USAGE<br>
+- 1
+- 2
+- 3
+<p>
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-
-Slide 5
-========================================================
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
+NEXT STEPS<br>
+- 1
+- 2
+- 3
