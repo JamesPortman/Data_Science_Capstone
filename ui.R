@@ -4,18 +4,20 @@
 
 library(shiny)
 
-shinyUI(
-  navbarPage("Word Predictor App",
-             
-             # Panel 1 Provide background documentation.
-             tabPanel("Documentation1",
-                      h4("Background"),
-                      "The data is from the 1974 Motor Trend magazine article that lists 10 car specifications for 32 different types of cars. The manual cars in the set of data tend to have better MPG ratings but this can be explained by other specifications such as horsepower and weight.",
-                      hr(),
-                      h4("Original Project"),
-                      helpText(  a("View PDF paper on GitHub", href="https://github.com/JamesPortman/DevelopingDataProducts/blob/master/DoesTransmissionTypeAffectMPG.pdf"))
-             )
-               
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+  
+  # Application title
+  titlePanel("Word Predictor App"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      textInput("text", label = h3("Input"), value = "Happy birthday to"),
+      submitButton("Predict next word")
+    ),
+    
+    mainPanel(
+      div(tableOutput("predictedWords"), align="left")
+    )
   )
-)
-# End ui.R
+  ))
