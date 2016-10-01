@@ -1,57 +1,51 @@
 Word Predictor App
 ========================================================
-font-family: 'Helvetica'
 author: James Portman
-date: September 27, 2016
-autosize: true
+date: October 1, 2016
+autosize: false
 transition: fade
 
 <br>
-This presentation will describe the algorithm used in the Word Predictor App. The App is published as a Shiny app. A link and instructions for using the App will be detailed on a subsequent slide.
+This presentation describes the algorithm used in a Word Predictor App. The App is published as a Shiny app. A link and instructions for using the App is be detailed on a subsequent slide.
 <p>
-This presentation is part of the Capstone project for the Data Science course offered through John Hopkins University.
+Part of the Capstone project for the Data Science course offered through John Hopkins University.
 
 
-Goal of the App
+Goal and Data source
 ========================================================
 
-The goal of the app is to predict the next possible word based on previous words in the sentence. Constraints on the App are:
+The goal is to predict the next possible word based on previous words in the sentence. Constraints are:
 
-- Must work within the memory and performance limits of a Shiny App.
-- Must load quickly.
-- Must provide predictions within a 3 second window. 
+- Work within Shiny App memory and performance limits.
+- Load quickly and provide predictions quickly.
+- Provide a prediction for every phrase entered.
 
+<b>Data</b><br>
+SwiftKey provided three files: Twitter tweets, Blog posts, and News entries. These files were randomly sampled and combined into a corpus of 15,000 sentences. The corpus was cleaned by removing white space, punctuation, numbers, and then converted to lowercase.
 
 How the predictive model works
 ========================================================
 
-DATA SOURCE<br>
-SwiftKey provided three files: Twitter tweets, Blog posts, and News entries. These files were randomly sampled and combined into a corpus of 15,000 sentences. The corpus was cleaned be stripping white, removing punctation and numbers, converting to lowercase, etc.
+STEP 1: CREATING N-GRAMS<br>
+An n-gram is a contiguous sequence of n items from a given sequence of text or speech. A tokenizer was used to create 1-gram, 2-gram, 3-grams, and 4-grams from the Corpus. The n-grams are then sorted by frequency and stored in data files to be quickly loaded by the Shiny App.
 
-CREATING N-GRAMS<br>
-An n-gram tokenizer was used to create bigrams, trigrams and quadgrams that are then sorted by frequency. These n-grams are stored in data files to be quickly loaded by the Shiny App.
-
-
- Quantitative performance of prediction algorithm
-========================================================
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
+STEP 2: PREDICTION<br>
+A back-off model was used to estimate the conditional probability of a word given its history in an n-gram. Under certain conditions, the estimation is provided by "backing-off" to models with smaller histories.
 
 
 Shiny App in Action
 ========================================================
 
-The App can be seen at: 
+The App can be seen at https://portman.shinyapps.io/dpApp/ <br>
+The app that takes as input a phrase in a text box input and outputs predictions for the next word. 
+<br>
 
-USAGE<br>
-- 1
-- 2
-- 3
-<p>
+Prediction Improvements
+========================================================
 
-NEXT STEPS<br>
-- 1
-- 2
-- 3
+- Instead of using Katz's back-off model try models such as Good-Turing discounting and Kneser-Ney smoothing.
+- Use skip-grams, where words need not be consecutive in the phrase, to overcome the data sparsity problem.<br>
+
+More Info
+- GitHub source repository: https://github.com/JamesPortman/Data_Science_Capstone
+- Any questions or comments can be directed to: james@portman.ca
