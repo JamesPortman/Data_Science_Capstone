@@ -1,14 +1,14 @@
 Word Predictor App
 ========================================================
 author: James Portman
-date: October 1, 2016
+date: October 3, 2016
 autosize: false
 transition: fade
 
 <br>
 This presentation describes the algorithm used in a Word Predictor App. The App is published as a Shiny app. A link and instructions for using the App is be detailed on a subsequent slide.
 <p>
-Part of the Capstone project for the Data Science course offered through John Hopkins University.
+Part of the Capstone project for the Data Science Certification offered through John Hopkins University.
 
 
 Goal and Data source
@@ -18,7 +18,7 @@ The goal is to predict the next possible word based on previous words in the sen
 
 - Work within Shiny App memory and performance limits.
 - Load quickly and provide predictions quickly.
-- Provide a prediction for every phrase entered.
+- Provide a prediction (or Unknown) for every phrase entered.
 
 <b>Data</b><br>
 SwiftKey provided three files: Twitter tweets, Blog posts, and News entries. These files were randomly sampled and combined into a corpus of 15,000 sentences. The corpus was cleaned by removing white space, punctuation, numbers, and then converted to lowercase.
@@ -36,16 +36,18 @@ A back-off model was used to estimate the conditional probability of a word give
 Shiny App in Action
 ========================================================
 
-The App can be seen at https://portman.shinyapps.io/dpApp/ <br>
-The app that takes as input a phrase in a text box input and outputs predictions for the next word. 
-<br>
+The App can be seen at: https://portman.shinyapps.io/WordPredictorApp/ <br>
+
+![Instructions](screen_snapshot.png)
+
+The app takes as input a phrase in a text box input and outputs the top predictions for the next word. The ranked score shows a measure of the relatively frequency.<br>
 
 Prediction Improvements
 ========================================================
-
+- Create a hash table to speed up the app's response time.
 - Instead of using Katz's back-off model try models such as Good-Turing discounting and Kneser-Ney smoothing.
-- Use skip-grams, where words need not be consecutive in the phrase, to overcome the data sparsity problem.<br>
+- Use skip-grams, where words need not be consecutive in the phrase, to overcome the data sparsity problem.
+- Allow previously typed user phrases to be added to the vocabulary and ranking.<br>
 
-More Info
-- GitHub source repository: https://github.com/JamesPortman/Data_Science_Capstone
-- Any questions or comments can be directed to: james@portman.ca
+
+<b>GitHub repository</b> https://github.com/JamesPortman/Data_Science_Capstone
