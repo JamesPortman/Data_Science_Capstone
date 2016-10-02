@@ -1,17 +1,13 @@
 # server.R
-# Date: Oct 1, 2016
+# Date: Oct 3, 2016
 # Author: James Portman
 
 library(shiny)
 # source('predict.R')
 
 shinyServer(function(input, output) {
-
-#output$predictedWords <- renderText({ 
-#  "test2"
-#})
   
-  df <- data.frame(Possibilities=c("A","B","C","D","E"))
+  df <- data.frame(Next_Word=c("be","do","go","see"), Ranked_Score = c("11","10","7","5"))
   output$predictedWords <- renderTable(df)
   
 })
