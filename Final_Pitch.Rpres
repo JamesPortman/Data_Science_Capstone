@@ -38,7 +38,7 @@ Shiny App in Action
 
 The App can be seen at: https://portman.shinyapps.io/WordPredictorApp/ <br>
 
-![Instructions](screen_snapshot.png)
+![Instructions](Final_Pitch_screen_snapshot.png)
 
 The app takes as input a phrase in a text box input and outputs the top predictions for the next word. The ranked score shows a measure of the relatively frequency.<br>
 
