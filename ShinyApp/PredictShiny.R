@@ -23,8 +23,7 @@ predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams)
   existingText_splitted <- unlist(strsplit( stri_trim_both(existingText), "\\s+"))
   existingText_countOfWords <- length(existingText_splitted)
   
-  #from <- max(existingText_countOfWords-1, 0)
-  from <- 1
+  from <- max(existingText_countOfWords-1, 0)
   until <- existingText_countOfWords;
   
   lastWords_vector <- existingText_splitted[from:until]
@@ -70,3 +69,7 @@ predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams)
   
   return(finalPrediction)
 }
+
+
+#load("ngrams.RData", envir = parent.frame(), verbose = FALSE)
+#predictNextWord("I want to her I", df_bigrams, df_trigrams, df_fourgrams)
