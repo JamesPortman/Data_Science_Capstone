@@ -13,7 +13,7 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       textInput("text", label = h4("Input"), value = "I have to"),
-      helpText("Type a sentence above and then press the 'Predict Next Word' button below. The results will display to the right."),
+      helpText("Type a sentence above and then press the 'Predict Next Word' button below. The suggested word will display to the right."),
       submitButton("Predict Next Word")
     ),
     
@@ -22,3 +22,4 @@ shinyUI(fluidPage(
     )
   )
   ))
+# END ui.R
