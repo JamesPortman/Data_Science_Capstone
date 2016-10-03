@@ -70,5 +70,3 @@ predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams)
   
   return(finalPrediction)
 }
-
-paste("Prediction: I have to", predictNextWord("I have to", df_bigrams, df_trigrams, df_fourgrams))
