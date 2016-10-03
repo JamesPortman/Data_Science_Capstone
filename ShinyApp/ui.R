@@ -18,6 +18,7 @@ shinyUI(fluidPage(
     ),
     
     mainPanel(
+      h4("Next predicted word:", align="left"),
       div(tableOutput("predictedWords"), align="left")
     )
   )
