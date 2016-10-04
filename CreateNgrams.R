@@ -27,7 +27,7 @@ close(con) # Close the connection to the file.
 tweets <- readLines(con <- file("./en_US.twitter.txt"), encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
 close(con) # Close the connection to the file.
 
-sampleSize <- 25000
+sampleSize <- 20000
 blogsSamples <- sample(blogs, sampleSize)
 newsSamples  <- sample(news, sampleSize)
 tweetsSamples  <- sample(tweets, sampleSize)
@@ -35,30 +35,29 @@ beep(sound = 1, expr = NULL)
 
 #_____ BELOW need to CLEANSE____
 # Concatenate all samples into one learning source
-learningLines <- c(blogsSamples, newsSamples, tweetsSamples)
+combinedLines <- c(blogsSamples, newsSamples, tweetsSamples)
 
 # Clean data
-learningLines <- stripWhitespace(learningLines)
-learningLines <- removePunctuation(learningLines)
-learningLines <- removeNumbers(learningLines)
-learningLines <- iconv(learningLines, "latin1", "ASCII", sub="") # remove non-ASCII characters
-learningLines <- tolower(learningLines)
+combinedLines <- stripWhitespace(combinedLines)
+combinedLines <- removePunctuation(combinedLines)
+combinedLines <- removeNumbers(combinedLines)
+combinedLines <- iconv(combinedLines, "latin1", "ASCII", sub="") # remove non-ASCII characters
+combinedLines <- tolower(combinedLines)
 
 # Create 1-column data.frame
-df <- data.frame(learningLines, stringsAsFactors = F)
+df <- data.frame(combinedLines, stringsAsFactors = F)
+
+# Reclaim memory for unneeded objects.
+remove(blogs,news,tweets, blogsSamples, newsSamples, tweetsSamples,combinedLines)
 
 bigrams  <- NGramTokenizer(df, Weka_control(min = 2, max = 2))
-beep(sound = 1, expr = NULL)
 trigrams <- NGramTokenizer(df, Weka_control(min = 3, max = 3))
-beep(sound = 1, expr = NULL)
 fourgrams <- NGramTokenizer(df, Weka_control(min = 4, max = 4))
-beep(sound = 1, expr = NULL)
 
 # Frequency of words
 df_bigrams <- data.frame(table(bigrams))
 df_trigrams <- data.frame(table(trigrams))
 df_fourgrams <- data.frame(table(fourgrams))
-beep(sound = 1, expr = NULL)
 
 # Normalize column names
 colnames(df_bigrams) <- c("word", "frequency")
@@ -82,4 +81,7 @@ df_fourgrams <- df_fourgrams[order(df_fourgrams$frequency, decreasing = T), ]
 
 # Store to disk
 save(df_bigrams, df_trigrams, df_fourgrams, file = "ngrams.RData")
-beep(sound = 1, expr = NULL)
+
+#load("ngrams.RData", envir = parent.frame(), verbose = TRUE, local = TRUE)
+
+# END CreateNgrams.R
