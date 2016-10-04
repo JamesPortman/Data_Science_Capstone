@@ -1,14 +1,14 @@
 library(stringi)
 
-lookupNextWord <- function(df_ngrams, existingText){
-  pattern <- paste0('^', existingText, ' ')
+findNextWord <- function(df_ngrams, currentPhrase){
+  thePattern <- paste0('^', currentPhrase, ' ')
   
-  predictedWord <- 'no-prediction-provided'
+  predictedWord <- 'No prediction available'
   max <- nrow(df_ngrams)
-  for(i in 1:max) {
-    matches <- length(grep(pattern, df_ngrams[i,1])) > 0
+  for(count in 1:max) {
+    matches <- length(grep(thePattern, df_ngrams[count,1])) > 0
     if (matches){
-      predictedWord <- df_ngrams$word[i]
+      predictedWord <- df_ngrams$word[count]
       predictedWord <- unlist(strsplit( predictedWord, "\\s+"))
       predictedWord <- predictedWord[length(predictedWord)]
       break;
@@ -18,41 +18,41 @@ lookupNextWord <- function(df_ngrams, existingText){
   return(predictedWord)
 }
 
-predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams){
-  existingText <- tolower(existingText)
-  existingText_splitted <- unlist(strsplit( stri_trim_both(existingText), "\\s+"))
-  existingText_countOfWords <- length(existingText_splitted)
+predictNextWord <- function(currentPhrase, df_bigrams, df_trigrams, df_fourgrams){
+  currentPhrase <- tolower(currentPhrase)
+  currentPhrase_splitted <- unlist(strsplit( stri_trim_both(currentPhrase), "\\s+"))
+  currentPhrase_countOfWords <- length(currentPhrase_splitted)
   
-  from <- max(existingText_countOfWords-1, 0)
-  until <- existingText_countOfWords;
+  from <- max(currentPhrase_countOfWords-1, 0)
+  until <- currentPhrase_countOfWords;
   
-  lastWords_vector <- existingText_splitted[from:until]
+  lastWords_vector <- currentPhrase_splitted[from:until]
  
   lastWords <- paste(lastWords_vector, collapse = ' ')
   
-  finalPrediction <- 'no-prediction-provided'
+  finalPrediction <- 'No prediction available'
   
   # Try to look best prediction after 3-words
   if (length(lastWords_vector) == 3){
-    predictedWord <- lookupNextWord(df_fourgrams, lastWords)
+    predictedWord <- findNextWord(df_fourgrams, lastWords)
 #    print(paste0("predictedWord=", predictedWord))
-    predictionWasFound <- (predictedWord != 'no-prediction-provided')
-    if (predictionWasFound){
+    predictionFound <- (predictedWord != 'No prediction available')
+    if (predictionFound){
       finalPrediction <- predictedWord
     }else{
-      lastWords_vector <- existingText_splitted[3]
+      lastWords_vector <- currentPhrase_splitted[3]
       lastWords <- lastWords_vector
     }
   }
   
   # Try to look best prediction after 2-words
   if (length(lastWords_vector) == 2){
-    predictedWord <- lookupNextWord(df_trigrams, lastWords)
-    predictionWasFound <- (predictedWord != 'no-prediction-provided')
-    if (predictionWasFound){
+    predictedWord <- findNextWord(df_trigrams, lastWords)
+    predictionFound <- (predictedWord != 'No prediction available')
+    if (predictionFound){
       finalPrediction <- predictedWord
     }else{
-      lastWords_vector <- existingText_splitted[2]
+      lastWords_vector <- currentPhrase_splitted[2]
       lastWords <- lastWords_vector
     }
   }
@@ -60,9 +60,9 @@ predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams)
   # Try to look best prediction after one-word
   if (length(lastWords_vector) == 1){
     lastWords <- lastWords_vector[length(lastWords_vector)]
-    predictedWord <- lookupNextWord(df_bigrams, lastWords)
-    predictionWasFound <- (predictedWord != 'no-prediction-provided')
-    if (predictionWasFound){
+    predictedWord <- findNextWord(df_bigrams, lastWords)
+    predictionFound <- (predictedWord != 'No prediction available')
+    if (predictionFound){
       finalPrediction <- predictedWord
     }
   }
@@ -70,6 +70,6 @@ predictNextWord <- function(existingText, df_bigrams, df_trigrams, df_fourgrams)
   return(finalPrediction)
 }
 
-
 #load("ngrams.RData", envir = parent.frame(), verbose = FALSE)
 #predictNextWord("I want to her I", df_bigrams, df_trigrams, df_fourgrams)
+# END PredictShiny.R
