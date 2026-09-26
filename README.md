@@ -36,17 +36,21 @@ tweets).
 
 ## Running it
 
-The app needs `ngrams.RData` next to `server.R`, which isn't in the current
-tree. Either rebuild it:
+The prebuilt n-gram tables ship in `ShinyApp/ngrams.RData`, so the app runs
+as-is. In R:
+
+```r
+install.packages(c("shiny", "stringi"))
+shiny::runApp("ShinyApp")
+```
+
+To rebuild the tables from the raw corpus instead:
 
 1. Download and unzip the Coursera-SwiftKey dataset (the original link is in
    the comment at the top of `CreateNgrams.R` and may no longer work).
 2. Change the `setwd(...)` line to your own folder, and add `library(dplyr)`,
    which the script's `filter()` calls need.
-3. Run `CreateNgrams.R`, then copy `ngrams.RData` into `ShinyApp/`.
-
-Then, in R: `install.packages(c("shiny", "stringi"))` and
-`shiny::runApp("ShinyApp")`.
+3. Run `CreateNgrams.R`, then copy the new `ngrams.RData` into `ShinyApp/`.
 
 ## Known limitations
 
